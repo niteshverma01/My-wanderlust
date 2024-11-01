@@ -1,0 +1,84 @@
+<style>
+  .search-btn {
+    background-color: #fe424d;
+    color: #fff;
+    border-radius: 25px;
+    padding: 0 1rem;
+  }
+  .search-btn:hover {
+    background-color: #fe424d;
+    color: #fff;
+  }
+  .search-btn i {
+    display: inline;
+    margin-right: 0.5rem;
+  }
+  .search-inp {
+    border-radius: 25px;
+    padding: 0.5rem 3rem;
+  }
+  @media (max-width: 550px) {
+    .navbar-nav {
+      flex-direction: column;
+      align-items: center; /* Center align items */
+      width: 100%; /* Full width */
+    }
+    .navbar-nav .nav-link {
+      width: 100%; /* Full width for nav links */
+      text-align: center; /* Center text */
+      margin: 0.5rem 0; /* Spacing between links */
+    }
+    .search-inp {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+  }
+</style>
+<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/listings">
+      <i class="fa-regular fa-compass"></i
+    ></a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavAltMarkup"
+    >
+      <span class="navbar-toggler-icon"><i class="fa-solid fa-bars"></i></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" href="/listings">Explore</a>
+      </div>
+      <div class="navbar-nav ms-auto">
+        <form class="d-flex" action="/listings/search" method="GET">
+          <input
+            class="form-control me-2 search-inp"
+            type="search"
+            placeholder="Search destinations"
+            name="title"
+          />
+          <button class="btn search-btn" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>Search
+          </button>
+        </form>
+      </div>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link" href="/listings/new">Airbnb your home</a>
+        <% if(!currUser) { %>
+        <a class="nav-link" href="/signup"
+          ><b>Sign up <i class="fa-solid fa-user-plus"></i></b
+        ></a>
+        <a class="nav-link" href="/login"
+          ><b>Log in <i class="fa-solid fa-user"></i></b
+        ></a>
+        <% } %> <% if(currUser) { %>
+        <a class="nav-link" href="/logout"
+          ><b>Log out <i class="fa-solid fa-right-from-bracket"></i></b
+        ></a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</nav>
