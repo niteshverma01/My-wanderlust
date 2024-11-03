@@ -17,7 +17,7 @@
     border-radius: 25px;
     padding: 0.5rem 3rem;
   }
-  @media (max-width: 550px) {
+  @media (max-width: 770px) {
     .navbar-nav {
       flex-direction: column;
       align-items: center; /* Center align items */
@@ -31,6 +31,9 @@
     .search-inp {
       width: 100%;
       margin-bottom: 1rem;
+    }
+    .mynav{
+      background-color:  #f12d3a;
     }
   }
 </style>
@@ -47,7 +50,7 @@
     >
       <span class="navbar-toggler-icon"><i class="fa-solid fa-bars"></i></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="collapse navbar-collapse mynav" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-link" href="/listings">Explore</a>
       </div>
@@ -65,7 +68,7 @@
         </form>
       </div>
       <div class="navbar-nav ms-auto">
-        <a class="nav-link" href="/listings/new">Airbnb your home</a>
+        <a class="nav-link" href="/listings/new">Add New Place</a>
         <% if(!currUser) { %>
         <a class="nav-link" href="/signup"
           ><b>Sign up <i class="fa-solid fa-user-plus"></i></b
