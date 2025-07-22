@@ -1,169 +1,781 @@
 <% layout("layouts/boilerplate.ejs") -%>
+
 <style>
-  #filters {
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  
+  :root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --neon-blue: #00f2fe;
+    --neon-pink: #f093fb;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --shadow-neon: 0 0 20px rgba(0, 242, 254, 0.3);
+    --shadow-heavy: 0 15px 40px rgba(0, 0, 0, 0.3);
+    --gold-accent: #ffd700;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+    min-height: 100vh;
+    color: #fff;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .particles-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.6;
+  }
+
+  .particle {
+    position: absolute;
+    background: var(--neon-blue);
+    border-radius: 50%;
+    animation: float 6s infinite ease-in-out;
+    box-shadow: 0 0 10px var(--neon-blue);
+  }
+
+  .particle:nth-child(2n) {
+    background: var(--neon-pink);
+    animation-delay: -2s;
+    box-shadow: 0 0 10px var(--neon-pink);
+  }
+
+  .particle:nth-child(3n) {
+    background: var(--gold-accent);
+    animation-delay: -4s;
+    box-shadow: 0 0 10px var(--gold-accent);
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+    50% { transform: translateY(-100px) scale(1.2); opacity: 0.9; }
+  }
+
+  .filters-cosmic {
+    margin: 3rem auto;
+    max-width: 1400px;
+    padding: 0 2rem;
+    position: relative;
+  }
+
+  .search-bar-cosmic {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    z-index: 10;
+  }
+
+  .search-input-cosmic {
+    width: 100%;
+    padding: 1rem 3rem 1rem 1.5rem;
+    background: rgba(15, 15, 35, 0.9);
+    border: 1px solid var(--neon-blue);
+    border-radius: 25px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-neon);
+    backdrop-filter: blur(15px);
+  }
+
+  .search-input-cosmic:focus {
+    outline: none;
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 25px rgba(240, 147, 251, 0.5);
+    transform: scale(1.02);
+  }
+
+  .search-icon-cosmic {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: var(--neon-blue);
+    transition: all 0.3s ease;
+  }
+
+  .search-input-cosmic:focus + .search-icon-cosmic {
+    color: var(--neon-pink);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .filters-wrapper {
+    background: rgba(15, 15, 35, 0.85);
+    backdrop-filter: blur(25px);
+    border-radius: 25px;
+    padding: 2rem;
+    border: 2px solid var(--neon-blue);
+    box-shadow: var(--shadow-heavy);
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: thin;
+    scrollbar-color: var(--neon-blue) transparent;
+  }
+
+  .filters-grid {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    overflow: hidden; /* Hides overflow for large screens */
+    flex-wrap: nowrap;
+    gap: 1.5rem;
+    scroll-snap-type: x mandatory;
   }
 
-  .filter {
-    text-align: center;
-    margin-right: 2rem;
-    margin-top: 2rem;
-    opacity: 0.7;
-    flex-shrink: 0; /* Prevents items from shrinking in smaller screens */
-  }
-
-  .filter:hover {
-    opacity: 1 !important;
+  .filter-cosmic {
+    padding: 1.2rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--glass-border);
+    border-radius: 15px;
     cursor: pointer;
-    transform: scale(1.05) !important;
-    transition: 100ms ease all !important;
+    transition: all 0.4s ease;
+    text-align: center;
+    backdrop-filter: blur(12px);
+    min-width: 120px;
+    scroll-snap-align: start;
+    position: relative;
+    overflow: hidden;
   }
 
-  .filter p {
-    font-size: 0.95rem;
+  .filter-cosmic::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 242, 254, 0.2), transparent);
+    transition: 0.5s;
   }
 
-  .tax-info {
-    display: none;
+  .filter-cosmic:hover::before {
+    left: 100%;
   }
 
-  .tax-toggle {
-    border: 1px solid black;
-    border-radius: 1rem;
-    height: 3.58rem;
-    padding: 1rem;
-    margin-left: 1rem;
+  .filter-cosmic:hover {
+    transform: translateY(-8px);
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 25px rgba(240, 147, 251, 0.4);
+  }
+
+  .filter-cosmic.active {
+    background: var(--primary-gradient);
+    border-color: var(--neon-blue);
+    transform: translateY(-8px);
+    box-shadow: 0 0 25px rgba(0, 242, 254, 0.5);
+  }
+
+  .filter-icon-cosmic {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    transition: all 0.4s ease;
+    text-shadow: 0 0 10px var(--neon-blue);
+  }
+
+  .filter-cosmic:hover .filter-icon-cosmic {
+    transform: scale(1.15);
+    text-shadow: 0 0 15px var(--neon-pink);
+  }
+
+  .filter-label-cosmic {
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #fff, #ccc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .tax-control-cosmic {
     display: flex;
     align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid var(--neon-pink);
+    border-radius: 25px;
+    backdrop-filter: blur(20px);
+    margin-top: 1.5rem;
+    box-shadow: var(--shadow-neon);
   }
 
-  /* Responsive styling for screens smaller than 550px */
+  .tax-label {
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .toggle-cosmic {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    border: 2px solid var(--neon-blue);
+  }
+
+  .toggle-cosmic.active {
+    background: var(--accent-gradient);
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 20px rgba(240, 147, 251, 0.5);
+  }
+
+  .toggle-slider-cosmic {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 26px;
+    height: 26px;
+    background: linear-gradient(135deg, #fff, #f0f0f0);
+    border-radius: 50%;
+    transition: all 0.4s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .toggle-cosmic.active .toggle-slider-cosmic {
+    transform: translateX(30px);
+  }
+
+  .listings-cosmic {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 2rem;
+    padding: 0 2rem;
+    max-width: 1400px;
+    margin: 3rem auto;
+  }
+
+  .card-cosmic {
+    background: rgba(15, 15, 35, 0.85);
+    border: 2px solid var(--neon-blue);
+    border-radius: 25px;
+    overflow: hidden;
+    transition: all 0.5s ease;
+    cursor: pointer;
+    position: relative;
+    backdrop-filter: blur(20px);
+    height: 420px;
+    box-shadow: var(--shadow-heavy);
+  }
+
+  .card-cosmic:hover {
+    transform: translateY(-12px);
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 30px rgba(240, 147, 251, 0.5);
+  }
+
+  .card-img-cosmic {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    transition: all 0.5s ease;
+  }
+
+  .card-cosmic:hover .card-img-cosmic {
+    transform: scale(1.08);
+  }
+
+  .card-img-overlay-cosmic {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 2;
+  }
+
+  .card-cosmic:hover .card-img-overlay-cosmic {
+    opacity: 1;
+  }
+
+  .card-body-cosmic {
+    padding: 1.2rem;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card-title-cosmic {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-bottom: 0.6rem;
+    background: linear-gradient(135deg, #fff, var(--gold-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .card-text-cosmic {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.6rem;
+    line-height: 1.4;
+  }
+
+  .price-cosmic {
+    font-size: 1.6rem;
+    font-weight: 800;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .tax-info-cosmic {
+    display: none;
+    font-size: 0.85rem;
+    color: var(--gold-accent);
+    background: rgba(255, 215, 0, 0.25);
+    padding: 0.4rem 0.8rem;
+    border-radius: 10px;
+    margin-top: 0.6rem;
+    font-weight: 600;
+  }
+
+  .loading-cosmic {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 15, 35, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s ease;
+    backdrop-filter: blur(10px);
+  }
+
+  .loading-cosmic.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .cosmic-spinner {
+    width: 80px;
+    height: 80px;
+    position: relative;
+  }
+
+  .cosmic-spinner::before,
+  .cosmic-spinner::after {
+    content: '';
+    position: absolute;
+    border: 4px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+  }
+
+  .cosmic-spinner::before {
+    width: 80px;
+    height: 80px;
+    border-top-color: var(--neon-blue);
+    border-right-color: var(--neon-blue);
+  }
+
+  .cosmic-spinner::after {
+    width: 60px;
+    height: 60px;
+    top: 10px;
+    left: 10px;
+    border-bottom-color: var(--neon-pink);
+    border-left-color: var(--neon-pink);
+    animation-direction: reverse;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.1); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
+
+  .scroll-reveal-cosmic {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.6s ease;
+  }
+
+  .scroll-reveal-cosmic.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   @media (max-width: 1100px) {
-    #filters {
-      overflow-x: auto; /* Allows horizontal scrolling */
-      white-space: nowrap; /* Prevents wrapping */
+    .filters-grid {
+      overflow-x: auto;
+      white-space: nowrap;
       flex-wrap: nowrap;
-      padding-bottom: 1rem; /* Adds space for horizontal scroll */
+      padding-bottom: 1rem;
     }
 
-    .filter {
-      margin-right: 1rem; /* Adjusts spacing for smaller screens */
-      margin-top: 0;
+    .filter-cosmic {
+      margin-right: 1rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .filters-cosmic {
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .search-bar-cosmic {
+      margin-bottom: 1.5rem;
+    }
+
+    .listings-cosmic {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 0 1.5rem;
+    }
+
+    .card-cosmic {
+      height: 400px;
+    }
+
+    .card-img-cosmic {
+      height: 200px;
+    }
+
+    .tax-control-cosmic {
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .filters-wrapper {
+      padding: 1.2rem;
+    }
+
+    .filter-cosmic {
+      min-width: 100px;
+      padding: 0.9rem;
+    }
+
+    .filter-icon-cosmic {
+      font-size: 1.8rem;
+    }
+
+    .filter-label-cosmic {
+      font-size: 0.8rem;
+    }
+
+    .card-body-cosmic {
+      padding: 1rem;
+      height: 190px;
+    }
+
+    .card-title-cosmic {
+      font-size: 1.2rem;
+    }
+
+    .price-cosmic {
+      font-size: 1.4rem;
+    }
+
+    .search-input-cosmic {
+      padding: 0.8rem 2.5rem 0.8rem 1.2rem;
+      font-size: 0.9rem;
     }
   }
 </style>
 
-<div id="filters">
-  <div class="filter">
-    <div><i class="fa-solid fa-fire"></i></div>
-    <p>Trending</p>
-  </div>
+<!-- Particles Background -->
+<div class="particles-bg" id="particlesBg"></div>
 
-  <div class="filter">
-    <div><i class="fa-solid fa-bed"></i></div>
-    <p>Rooms</p>
-  </div>
-
-  <div class="filter">
-    <div><i class="fa-solid fa-mountain-city"></i></div>
-    <p>Iconic Cities</p>
-  </div>
-
-  <div class="filter">
-    <div><i class="fa-solid fa-mountain-sun"></i></div>
-    <p>Mountains</p>
-  </div>
-
-  <div class="filter">
-    <div><i class="fa-brands fa-fort-awesome"></i></div>
-    <p>Castles</p>
-  </div>
-
-  <div class="filter">
-    <div><i class="fa-solid fa-wheat-awn"></i></div>
-    <p>Farms</p>
-  </div>
-
-  <div class="filter">
-    <div><i class="fa-solid fa-umbrella-beach"></i></div>
-    <p>Beach</p>
-  </div>
-
-  <div class="filter">
-    <div><i class="fa-solid fa-snowflake"></i></div>
-    <p>Arctic</p>
-  </div>
-
-  <div class="filter">
-    <div><i class="fa-solid fa-landmark-dome"></i></div>
-    <p>Dome</p>
-  </div>
-
-  <div class="filter">
-    <div><i class="fa-solid fa-ship"></i></div>
-    <p>Boats</p>
-  </div>
-
-  <div class="filter">
-    <div><i class="fa-solid fa-person-skating"></i></div>
-    <p>Ski-in/out</p>
-  </div>
-
-  <div class="filter">
-    <div><i class="fa-solid fa-train"></i></div>
-    <p>Train </p>
-  </div>
-
-  <div class="tax-toggle">
-    <div class="form-check form-check-reverse form-switch">
-      <input
-        class="form-check-input"
-        type="checkbox"
-        role="switch"
-        id="flexSwitchCheckDefault"
-      />
-      <label class="form-check-label" for="flexSwitchCheckDefault"
-        >Display total after taxes</label
-      >
-    </div>
-  </div>
+<!-- Loading Portal -->
+<div class="loading-cosmic" id="loadingCosmic">
+  <div class="cosmic-spinner"></div>
 </div>
 
-<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
-  <% for(let listing of allListings){ %>
-  <a href="/listings/<%= listing._id %>" class="listing-link">
-    <div class="card col listing-card">
-      <img
-        src="<%= listing.image.url %>"
-        class="card-img-top"
-        alt="listing_image"
-        style="height: 20rem"
-      />
-      <div class="card-img-overlay"></div>
-      <div class="card-body">
-        <p class="card-text">
-          <b><%= listing.title %></b><br />
-          &#8377; <%= listing.price.toLocaleString("en-In") %> /night
-          <i class="tax-info">&nbsp;&nbsp;+18% GST</i>
-        </p>
+<!-- Filters Section -->
+<div class="filters-cosmic">
+  <!-- Search Bar -->
+  <div class="search-bar-cosmic">
+    <input 
+      type="text" 
+      class="search-input-cosmic" 
+      id="searchInputCosmic" 
+      placeholder="Search by title or location..." 
+      autocomplete="off"
+    >
+    <i class="fas fa-search search-icon-cosmic"></i>
+  </div>
+
+  <div class="filters-wrapper">
+    <div class="filters-grid">
+      <% const filters = [
+        { icon: 'fa-solid fa-fire', label: 'Trending', category: 'trending' },
+        { icon: 'fa-solid fa-bed', label: 'Rooms', category: 'rooms' },
+        { icon: 'fa-solid fa-mountain-city', label: 'Cities', category: 'cities' },
+        { icon: 'fa-solid fa-mountain-sun', label: 'Mountains', category: 'mountains' },
+        { icon: 'fa-brands fa-fort-awesome', label: 'Castles', category: 'castles' },
+        { icon: 'fa-solid fa-wheat-awn', label: 'Farms', category: 'farms' },
+        { icon: 'fa-solid fa-umbrella-beach', label: 'Beach', category: 'beach' },
+        { icon: 'fa-solid fa-snowflake', label: 'Arctic', category: 'arctic' },
+        { icon: 'fa-solid fa-landmark-dome', label: 'Dome', category: 'dome' },
+        { icon: 'fa-solid fa-ship', label: 'Boats', category: 'boats' },
+        { icon: 'fa-solid fa-person-skating', label: 'Ski', category: 'ski' },
+        { icon: 'fa-solid fa-train', label: 'Train', category: 'train' }
+      ]; %>
+      <% for(let filter of filters) { %>
+        <div class="filter-cosmic <%= filter.category === 'trending' ? 'active' : '' %>" data-filter="<%= filter.category %>">
+          <i class="<%= filter.icon %> filter-icon-cosmic"></i>
+          <div class="filter-label-cosmic"><%= filter.label %></div>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- Tax Toggle -->
+    <div class="tax-control-cosmic">
+      <div class="tax-label">
+        <i class="fas fa-calculator"></i>
+        Show total with taxes
+      </div>
+      <div class="toggle-cosmic" id="taxToggleCosmic">
+        <div class="toggle-slider-cosmic"></div>
       </div>
     </div>
-  </a>
+  </div>
+</div>
+
+<!-- Listings Grid -->
+<div class="listings-cosmic" id="listingsCosmic">
+  <% if (!allListings || allListings.length === 0) { %>
+    <p style="text-align: center; font-size: 1.2rem; color: rgba(255, 255, 255, 0.8);">
+      No listings available.
+    </p>
+  <% } else { %>
+    <% for(let listing of allListings) { %>
+      <a href="/listings/<%= listing._id || 'unknown' %>" class="listing-link">
+        <div class="card-cosmic scroll-reveal-cosmic">
+          <img 
+            src="<%= listing.image && listing.image.url ? listing.image.url : 'https://via.placeholder.com/320x200' %>" 
+            alt="<%= listing.title || 'Listing Image' %>" 
+            class="card-img-cosmic"
+            onerror="this.src='https://via.placeholder.com/320x200'"
+          >
+          <div class="card-img-overlay-cosmic"></div>
+          <div class="card-body-cosmic">
+            <div>
+              <h5 class="card-title-cosmic"><%= listing.title || 'Untitled Listing' %></h5>
+              <p class="card-text-cosmic">
+                <i class="fas fa-map-marker-alt"></i>
+                <%= listing.location || 'Premium Location' %> • Verified Host
+              </p>
+            </div>
+            <div>
+              <div class="price-cosmic">
+                ₹<%= listing.price ? listing.price.toLocaleString("en-IN") : 'N/A' %>
+                <span style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.6);">
+                  /night
+                </span>
+              </div>
+              <div class="tax-info-cosmic">
+                +₹<%= listing.price ? Math.round(listing.price * 0.18).toLocaleString("en-IN") : 'N/A' %> GST
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    <% } %>
   <% } %>
 </div>
+
 <script>
-  let taxToggle = document.getElementById("flexSwitchCheckDefault");
-  taxToggle.addEventListener("click", () => {
-    let taxInfo = document.getElementsByClassName("tax-info");
-    for (info of taxInfo) {
-      if (info.style.display != "inline") {
-        info.style.display = "inline";
-      } else {
-        info.style.display = "none";
-      }
+  // Initialize particles background
+  function createParticles() {
+    const particlesBg = document.getElementById('particlesBg');
+    const particleCount = window.innerWidth < 768 ? 30 : 60;
+    particlesBg.innerHTML = '';
+
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      const size = Math.random() * 3 + 2;
+      particle.style.width = size + 'px';
+      particle.style.height = size + 'px';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.top = Math.random() * 100 + '%';
+      particle.style.animationDelay = Math.random() * 5 + 's';
+      particle.style.animationDuration = (Math.random() * 4 + 5) + 's';
+      const colors = ['var(--neon-blue)', 'var(--neon-pink)', 'var(--gold-accent)'];
+      particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+      particlesBg.appendChild(particle);
     }
+  }
+
+  // Tax Toggle
+  let taxEnabled = false;
+  const taxToggle = document.getElementById('taxToggleCosmic');
+  function updateTaxDisplay() {
+    const taxInfos = document.querySelectorAll('.tax-info-cosmic');
+    taxInfos.forEach(info => {
+      info.style.display = taxEnabled ? 'block' : 'none';
+    });
+  }
+
+  taxToggle.addEventListener('click', () => {
+    taxEnabled = !taxEnabled;
+    taxToggle.classList.toggle('active');
+    updateTaxDisplay();
+    taxToggle.style.boxShadow = taxEnabled 
+      ? '0 0 20px rgba(240, 147, 251, 0.6)' 
+      : 'none';
+  });
+
+  // Dynamic Filter and Search System
+  let currentCategory = 'trending';
+  async function fetchListings(category, searchQuery = '') {
+    const loadingCosmic = document.getElementById('loadingCosmic');
+    const listingsContainer = document.getElementById('listingsCosmic');
+    loadingCosmic.classList.add('active');
+    listingsContainer.style.opacity = '0.5';
+
+    try {
+      const url = searchQuery 
+        ? `/api/listings?category=${category}&search=${encodeURIComponent(searchQuery)}`
+        : `/api/listings?category=${category}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+      const listings = await response.json();
+      listingsContainer.innerHTML = '';
+
+      if (listings.length === 0) {
+        listingsContainer.innerHTML = `
+          <p style="text-align: center; font-size: 1.2rem; color: rgba(255, 255, 255, 0.8);">
+            No listings found${searchQuery ? ' for "' + searchQuery + '"' : ''}.
+          </p>
+        `;
+      } else {
+        listings.forEach(listing => {
+          const card = document.createElement('div');
+          card.className = 'card-cosmic scroll-reveal-cosmic';
+          card.innerHTML = `
+            <a href="/listings/${listing._id || 'unknown'}" class="listing-link">
+              <img 
+                src="${listing.image && listing.image.url ? listing.image.url : 'https://via.placeholder.com/320x200'}" 
+                alt="${listing.title || 'Listing Image'}" 
+                class="card-img-cosmic"
+                onerror="this.src='https://via.placeholder.com/320x200'"
+              >
+              <div class="card-img-overlay-cosmic"></div>
+              <div class="card-body-cosmic">
+                <div>
+                  <h5 class="card-title-cosmic">${listing.title || 'Untitled Listing'}</h5>
+                  <p class="card-text-cosmic">
+                    <i class="fas fa-map-marker-alt"></i>
+                    ${listing.location || 'Premium Location'} • Verified Host
+                  </p>
+                </div>
+                <div>
+                  <div class="price-cosmic">
+                    ₹${listing.price ? listing.price.toLocaleString("en-IN") : 'N/A'}
+                    <span style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.6);">
+                      /night
+                    </span>
+                  </div>
+                  <div class="tax-info-cosmic" style="display: ${taxEnabled ? 'block' : 'none'};">
+                    +₹${listing.price ? Math.round(listing.price * 0.18).toLocaleString("en-IN") : 'N/A'} GST
+                  </div>
+                </div>
+              </div>
+            </a>
+          `;
+          listingsContainer.appendChild(card);
+        });
+      }
+
+      // Animate cards
+      const cards = document.querySelectorAll('.card-cosmic');
+      cards.forEach((card, index) => {
+        setTimeout(() => {
+          card.classList.add('revealed');
+        }, index * 150);
+      });
+
+      updateTaxDisplay();
+    } catch (error) {
+      console.error('Error fetching listings:', error);
+      listingsContainer.innerHTML = `
+        <p style="text-align: center; font-size: 1.2rem; color: rgba(255, 255, 255, 0.8);">
+          Error loading listings. Please try again.
+        </p>
+      `;
+    } finally {
+      loadingCosmic.classList.remove('active');
+      listingsContainer.style.opacity = '1';
+    }
+  }
+
+  // Filter Event Listeners
+  document.querySelectorAll('.filter-cosmic').forEach(filter => {
+    filter.addEventListener('click', () => {
+      document.querySelectorAll('.filter-cosmic').forEach(f => f.classList.remove('active'));
+      filter.classList.add('active');
+      currentCategory = filter.getAttribute('data-filter');
+      const searchQuery = document.getElementById('searchInputCosmic').value;
+      fetchListings(currentCategory, searchQuery);
+    });
+  });
+
+  // Search Event Listener with Debounce
+  let searchTimeout;
+  document.getElementById('searchInputCosmic').addEventListener('input', () => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      const searchQuery = document.getElementById('searchInputCosmic').value;
+      fetchListings(currentCategory, searchQuery);
+    }, 300);
+  });
+
+  // Scroll Reveal Animation
+  function scrollRevealCosmic() {
+    const reveals = document.querySelectorAll('.scroll-reveal-cosmic:not(.revealed)');
+    reveals.forEach(element => {
+      const elementTop = element.getBoundingClientRect().top;
+      const elementVisible = 150;
+      if (elementTop < window.innerHeight - elementVisible) {
+        element.classList.add('revealed');
+      }
+    });
+  }
+
+  // Initialize
+  window.addEventListener('DOMContentLoaded', () => {
+    createParticles();
+    setTimeout(scrollRevealCosmic, 100);
+    updateTaxDisplay();
+  });
+
+  window.addEventListener('scroll', scrollRevealCosmic);
+
+  // Responsive Particle Adjustment
+  window.addEventListener('resize', () => {
+    clearTimeout(window.resizeTimer);
+    window.resizeTimer = setTimeout(createParticles, 200);
   });
 </script>

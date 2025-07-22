@@ -1,145 +1,454 @@
 <% layout("layouts/boilerplate.ejs") -%>
+<style>
+/* Advanced Gradients & Animations */
+.hero-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+}
 
-<!-- Display listing details in a card -->
-<div class="row mt-3">
-  <div class="col-8 offset-3">
-    <h3><%= listing.title %></h3>
-  </div>
-  <div class="card col-6 offset-3 show-card listing-card">
-    <img
-      src="<%= listing.image.url %>"
-      class="card-img-top show-img"
-      alt="listing_image"
-    />
-    <div class="card-body">
-      <p class="card-text">
-        Owned By:
-        <i
-          ><b>
-            <%= listing.owner ? listing.owner.username : 'Unknown Owner' %>
-          </b></i
-        >
-      </p>
-      <p class="card-text"><%= listing.description %></p>
-      <p class="card-text">
-        &#8377; <%= listing.price.toLocaleString("en-IN") %> /night
-      </p>
-      <p class="card-text"><%= listing.location %></p>
-      <p class="card-text"><%= listing.country %></p>
+.hero-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%), 
+              linear-gradient(-45deg, rgba(255,255,255,0.1) 25%, transparent 25%), 
+              linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.1) 75%), 
+              linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.1) 75%);
+  background-size: 30px 30px;
+  background-position: 0 0, 0 15px, 15px -15px, -15px 0px;
+  animation: movePattern 20s linear infinite;
+}
+
+@keyframes movePattern {
+  0% { transform: translateX(0px) translateY(0px); }
+  100% { transform: translateX(30px) translateY(30px); }
+}
+
+.gradient-text {
+  background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcf7e, #4ecdc4, #45b7d1);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 3s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Glass Morphism */
+.glass-card {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.glass-card-dark {
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Floating Animation */
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Image Hover Effects */
+.image-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.image-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s;
+  z-index: 2;
+}
+
+.image-container:hover::before {
+  left: 100%;
+}
+
+.listing-image {
+  transition: transform 0.5s ease, filter 0.3s ease;
+}
+
+.image-container:hover .listing-image {
+  transform: scale(1.05);
+  filter: brightness(1.1) contrast(1.1);
+}
+
+/* Price Badge Animation */
+.price-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Interactive Buttons */
+.btn-modern {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-modern::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-modern:hover::before {
+  left: 100%;
+}
+
+.btn-modern:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+}
+
+/* Star Rating Animation */
+.star-rating .fa-star {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.star-rating .fa-star:hover {
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 8px #ffd700);
+}
+
+/* Review Cards */
+.review-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Particle Background */
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, rgba(102, 126, 234, 0.8) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: float-particle 15s infinite linear;
+}
+
+@keyframes float-particle {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-10vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Responsive Magic */
+@media (max-width: 768px) {
+  .glass-card {
+    margin: 1rem;
+  }
+  
+  .hero-gradient {
+    padding: 2rem 1rem;
+  }
+}
+
+/* Loading States */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+</style>
+
+<!-- Floating Particles Background -->
+<div class="particles"></div>
+<!-- Hero Section -->
+<div class="hero-gradient text-white py-5 mb-5">
+  <div class="container text-center">
+    <h1 class="fw-bold display-3 gradient-text mb-3"><%= listing.title %></h1>
+    <p class="fs-4 mb-4" style="color: rgba(255,255,255,0.9);">✨ Discover extraordinary experiences ✨</p>
+    <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">
+      <span class="badge bg-light text-dark fs-6 px-3 py-2 rounded-pill">
+        <i class="fa-solid fa-location-dot me-2"></i><%= listing.location %>, <%= listing.country %>
+      </span>
+      <span class="badge price-badge fs-5 px-4 py-2 rounded-pill text-white">
+        💰 ₹<%= listing.price.toLocaleString("en-IN") %> / night
+      </span>
     </div>
-  </div>
-
-  <br />
-
-  <% if (currUser && listing.owner && currUser._id.equals(listing.owner._id)){%>
-  <div class="btns mt-3">
-    <a
-      href="/listings/<%= listing._id %>/edit"
-      class="btn btn-dark col-1 offset-3 edit-btn"
-      >Edit</a
-    >
-    <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
-      <button class="btn btn-dark offset-5">Delete</button>
-    </form>
-  </div>
-  <% } %>
-    <br>
-
-  <div class="col-8 offset-3 mb-3">
-    <!-- Review Form for logged-in users -->
-    <% if(currUser ) { %>
-    <h4>Leave a Review</h4>
-    <form
-      action="/listings/<%= listing._id %>/reviews"
-      method="POST"
-      novalidate
-      class="needs-validation"
-    >
-      <div class="mb-3 mt-3">
-        <label for="rating" class="form-label">Rating</label>
-        <fieldset class="starability-slot">
-          <input
-            type="radio"
-            id="first-rate1"
-            name="review[rating]"
-            value="1"
-          />
-          <label for="first-rate1" title="Terrible">1 star</label>
-          <input
-            type="radio"
-            id="first-rate2"
-            name="review[rating]"
-            value="2"
-          />
-          <label for="first-rate2" title="Not good">2 stars</label>
-          <input
-            type="radio"
-            id="first-rate3"
-            name="review[rating]"
-            value="3"
-          />
-          <label for="first-rate3" title="Average">3 stars</label>
-          <input
-            type="radio"
-            id="first-rate4"
-            name="review[rating]"
-            value="4"
-          />
-          <label for="first-rate4" title="Very good">4 stars</label>
-          <input
-            type="radio"
-            id="first-rate5"
-            name="review[rating]"
-            value="5"
-          />
-          <label for="first-rate5" title="Amazing">5 stars</label>
-        </fieldset>
-      </div>
-      <div class="mb-3 mt-3">
-        <label for="comment" class="form-label">Comment</label>
-        <textarea
-          id="comment"
-          name="review[comment]"
-          cols="25"
-          rows="5"
-          class="form-control"
-          required
-        ></textarea>
-        <div class="invalid-feedback">
-          Please add some comments for the review
-        </div>
-      </div>
-      <button class="btn btn-outline-dark">Submit</button>
-    </form>
-    <br>
-
-    <% } %> <% if(listing.reviews.length > 0 ) { %>
-    <div class="row">
-      <p><b>All Reviews</b></p>
-      <% for (let review of listing.reviews) { %>
-      <div class="card col-5 ms-3 mb-3">
-        <div class="card-body">
-          <% if (review.author && review.author.username) { %>
-          <h5 class="card-title">@<%= review.author.username %></h5>
-          <% } else { %>
-          <h5 class="card-title">@Anonymous</h5>
-          <% } %>
-          <p
-            class="starability-result card-text"
-            data-rating="<%= review.rating %>"
-          ></p>
-          <p class="card-text"><%= review.comment %></p>
-        </div>
-        <form
-          class="mb-3"
-          method="POST"
-          action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
-        >
-          <button class="btn btn-sm btn-dark">Delete</button>
-        </form>
-      </div>
-      <% } %>
-    </div>
-    <% } %>
   </div>
 </div>
+<!-- Main Content Container -->
+<div class="container pb-5">
+  <!-- Main Listing Card -->
+  <div class="row justify-content-center">
+    <div class="col-lg-10 col-xl-9">
+      <div class="glass-card rounded-5 overflow-hidden mb-5">
+        <!-- Image Section -->
+        <div class="image-container">
+          <img src="<%= listing.image.url %>" 
+               alt="<%= listing.title %>" 
+               class="w-100 listing-image" 
+               style="height: 400px; object-fit: cover;" />
+        </div>
+
+        <!-- Content Section -->
+        <div class="p-5">
+          <!-- Owner Section -->
+          <div class="d-flex align-items-center mb-4">
+            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" 
+                 style="width: 50px; height: 50px;">
+              <i class="fa-solid fa-user text-white fs-5"></i>
+            </div>
+            <div>
+              <p class="mb-1 text-muted small">HOSTED BY</p>
+              <h6 class="mb-0 fw-bold"><%= listing.owner ? listing.owner.username : 'Unknown Host' %></h6>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-4">
+            <h5 class="mb-3">About this place</h5>
+            <p class="fs-5 lh-lg text-muted"><%= listing.description %></p>
+          </div>
+
+          <!-- Action Buttons for Owner -->
+          <% if (currUser && listing.owner && currUser._id.equals(listing.owner._id)) { %>
+          <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="/listings/<%= listing._id %>/edit" 
+               class="btn btn-modern text-white rounded-pill px-5 py-3">
+              <i class="fa-solid fa-edit me-2"></i>Edit Listing
+            </a>
+            <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" class="d-inline">
+              <button class="btn btn-outline-danger rounded-pill px-5 py-3" 
+                      onclick="return confirm('Are you sure you want to delete this listing?')">
+                <i class="fa-solid fa-trash me-2"></i>Delete Listing
+              </button>
+            </form>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Review Section -->
+  <% if(currUser) { %>
+  <div class="row justify-content-center mb-5">
+    <div class="col-lg-8">
+      <div class="glass-card-dark rounded-4 p-5 text-white">
+        <div class="text-center mb-4">
+          <h3 class="mb-3">Share Your Experience</h3>
+          <p class="text-light">Help others discover this amazing place</p>
+        </div>
+
+        <form action="/listings/<%= listing._id %>/reviews" method="POST" class="needs-validation" novalidate>
+          <!-- Star Rating -->
+          <div class="mb-4 text-center">
+            <label class="form-label fs-5 mb-3">Rate Your Stay</label>
+            <div class="star-rating d-flex justify-content-center gap-2">
+              <% for (let i = 1; i <= 5; i++) { %>
+                <input type="radio" class="d-none" name="review[rating]" id="rate<%= i %>" value="<%= i %>">
+                <label class="fs-2" for="rate<%= i %>" style="cursor: pointer;">
+                  <i class="fa-regular fa-star text-warning"></i>
+                </label>
+              <% } %>
+            </div>
+          </div>
+
+          <!-- Comment Section -->
+          <div class="mb-4">
+            <label for="comment" class="form-label fs-5">Tell us about your experience</label>
+            <textarea name="review[comment]" 
+                      id="comment" 
+                      rows="4" 
+                      class="form-control bg-transparent border-light text-white" 
+                      style="backdrop-filter: blur(10px);"
+                      placeholder="What made your stay special?"
+                      required></textarea>
+            <div class="invalid-feedback">Please share your experience with us.</div>
+          </div>
+
+          <div class="text-center">
+            <button type="submit" class="btn btn-modern text-white rounded-pill px-5 py-3">
+              <i class="fa-solid fa-paper-plane me-2"></i>Submit Review
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <% } %>
+
+  <!-- Reviews Display -->
+  <% if(listing.reviews && listing.reviews.length > 0) { %>
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="text-center mb-5">
+        <h3 class="gradient-text mb-3">Guest Experiences</h3>
+        <p class="text-muted fs-5"><%= listing.reviews.length %> travelers have shared their stories</p>
+      </div>
+
+      <div class="row g-4">
+        <% listing.reviews.forEach((review, index) => { %>
+        <div class="col-md-6">
+          <div class="review-card rounded-4 p-4 h-100" style="animation-delay: <%= index * 0.1 %>s;">
+            <!-- Review Header -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div class="d-flex align-items-center">
+                <div class="bg-gradient-primary rounded-circle d-flex align-items-center justify-content-center me-3" 
+                     style="width: 40px; height: 40px;">
+                  <i class="fa-solid fa-user text-white"></i>
+                </div>
+                <div>
+                  <h6 class="mb-0 fw-bold">@<%= review.author?.username || 'Anonymous' %></h6>
+                  <small class="text-muted">Verified Guest</small>
+                </div>
+              </div>
+              
+              <!-- Star Display -->
+              <div class="d-flex">
+                <% for (let i = 1; i <= 5; i++) { %>
+                  <i class="fa-star <%= i <= review.rating ? 'fa-solid text-warning' : 'fa-regular text-muted' %> me-1"></i>
+                <% } %>
+              </div>
+            </div>
+
+            <!-- Review Content -->
+            <p class="mb-3 lh-lg"><%= review.comment %></p>
+
+            <!-- Delete Button for Review Author -->
+            <% if(currUser && review.author && currUser._id.equals(review.author._id)) { %>
+            <div class="text-end">
+              <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" class="d-inline">
+                <button class="btn btn-sm btn-outline-danger rounded-pill px-3" 
+                        onclick="return confirm('Delete this review?')">
+                  <i class="fa-solid fa-trash me-1"></i>Remove
+                </button>
+              </form>
+            </div>
+            <% } %>
+          </div>
+        </div>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<script>
+// Create floating particles
+function createParticles() {
+  const particlesContainer = document.querySelector('.particles');
+  const particleCount = 50;
+
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.animationDelay = Math.random() * 15 + 's';
+    particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+    particlesContainer.appendChild(particle);
+  }
+}
+
+// Star rating interaction
+document.querySelectorAll('.star-rating input').forEach(input => {
+  input.addEventListener('change', function() {
+    const rating = this.value;
+    const stars = this.closest('.star-rating').querySelectorAll('label i');
+    
+    stars.forEach((star, index) => {
+      if (index < rating) {
+        star.className = 'fa-solid fa-star text-warning';
+      } else {
+        star.className = 'fa-regular fa-star text-warning';
+      }
+    });
+  });
+});
+
+// Initialize particles when page loads
+document.addEventListener('DOMContentLoaded', createParticles);
+
+// Add smooth scrolling
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    document.querySelector(this.getAttribute('href')).scrollIntoView({
+      behavior: 'smooth'
+    });
+  });
+});
+
+// Form validation enhancement
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    const forms = document.getElementsByClassName('needs-validation');
+    Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+</script>

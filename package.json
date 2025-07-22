@@ -1,17 +1,23 @@
 {
-  "engines": {
-    "node": "v20.15.1"
-  },
   "name": "wanderlust",
   "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "homepage": "https://github.com/niteshverma01/My-wanderlust#readme",
+  "bugs": {
+    "url": "https://github.com/niteshverma01/My-wanderlust/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niteshverma01/My-wanderlust.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "@mapbox/mapbox-sdk": "^0.16.1",
     "cloudinary": "^1.21.0",
@@ -31,5 +37,8 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^8.0.0"
+  },
+  "engines": {
+    "node": "v20.15.1"
   }
 }

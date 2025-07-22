@@ -1,16 +1,604 @@
-<footer>
-  <div class="f-info">
-    <div class="f-info-socials">
-      <i class="fa-brands fa-facebook"></i>
-      <i class="fa-brands fa-instagram"></i>
-      <i class="fa-brands fa-linkedin"></i>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust - Next Level Footer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        
+        .demo-content {
+            padding: 3rem 0;
+            text-align: center;
+            color: white;
+        }
+        
+        .footer-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .footer-background {
+            background: linear-gradient(145deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            position: relative;
+        }
+        
+        .footer-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+            animation: gradientShift 8s ease-in-out infinite alternate;
+        }
+        
+        @keyframes gradientShift {
+            0% { opacity: 0.7; transform: scale(1) rotate(0deg); }
+            100% { opacity: 1; transform: scale(1.1) rotate(1deg); }
+        }
+        
+        .footer-wave {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            transform: rotate(180deg);
+        }
+        
+        .footer-wave svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 80px;
+        }
+        
+        .footer-wave .shape-fill {
+            fill: #667eea;
+            animation: waveAnimation 4s ease-in-out infinite;
+        }
+        
+        @keyframes waveAnimation {
+            0%, 100% { transform: translateX(0px); }
+            50% { transform: translateX(-10px); }
+        }
+        
+        .footer-content {
+            position: relative;
+            z-index: 2;
+            padding: 4rem 0 2rem 0;
+        }
+        
+        .brand-section {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .brand-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientText 3s ease-in-out infinite alternate;
+            margin-bottom: 0.5rem;
+        }
+        
+        @keyframes gradientText {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        
+        .brand-subtitle {
+            color: #a0a9c0;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            animation: slideInSocial 0.8s ease-out forwards;
+        }
+        
+        .social-icon:nth-child(1) { animation-delay: 0.2s; }
+        .social-icon:nth-child(2) { animation-delay: 0.4s; }
+        .social-icon:nth-child(3) { animation-delay: 0.6s; }
+        
+        @keyframes slideInSocial {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .social-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+        
+        .social-icon:hover::before {
+            left: 100%;
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .social-icon.facebook:hover {
+            background: linear-gradient(135deg, #1877f2, #42a5f5);
+        }
+        
+        .social-icon.instagram:hover {
+            background: linear-gradient(135deg, #e4405f, #fccc63, #833ab4);
+        }
+        
+        .social-icon.linkedin:hover {
+            background: linear-gradient(135deg, #0077b5, #00a0dc);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-link {
+            color: #a0a9c0;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInLink 0.8s ease-out forwards;
+        }
+        
+        .footer-link:nth-child(1) { animation-delay: 0.3s; }
+        .footer-link:nth-child(2) { animation-delay: 0.5s; }
+        .footer-link:nth-child(3) { animation-delay: 0.7s; }
+        
+        @keyframes fadeInLink {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .footer-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            z-index: -1;
+        }
+        
+        .footer-link:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .footer-link:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            text-align: center;
+        }
+        
+        .made-with-love {
+            color: #a0a9c0;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1s forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .heart-icon {
+            color: #ff4757;
+            animation: heartbeat 1.5s ease-in-out infinite;
+            display: inline-block;
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .creator-name {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+        
+        .copyright {
+            color: #6c757d;
+            font-size: 0.85rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1.2s forwards;
+        }
+        
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-element:nth-child(1) {
+            width: 20px;
+            height: 20px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .floating-element:nth-child(2) {
+            width: 15px;
+            height: 15px;
+            top: 60%;
+            right: 20%;
+            animation-delay: 2s;
+        }
+        
+        .floating-element:nth-child(3) {
+            width: 25px;
+            height: 25px;
+            bottom: 30%;
+            left: 80%;
+            animation-delay: 4s;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+                opacity: 1;
+            }
+        }
+        
+        .newsletter-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            animation: slideInNewsletter 1s ease-out 0.8s forwards;
+        }
+        
+        @keyframes slideInNewsletter {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .newsletter-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .newsletter-subtitle {
+            color: #a0a9c0;
+            margin-bottom: 1.5rem;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .newsletter-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .newsletter-input::placeholder {
+            color: #a0a9c0;
+        }
+        
+        .newsletter-input:focus {
+            outline: none;
+            border-color: #4ecdc4;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .newsletter-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .newsletter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .brand-title {
+                font-size: 2rem;
+            }
+            
+            .social-icons {
+                gap: 1rem;
+            }
+            
+            .social-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+            
+            .footer-links {
+                gap: 1rem;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .newsletter-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Content -->
+    <div class="demo-content">
+        <h1>Wanderlust Travel Experience</h1>
+        <p>Scroll down to see the next-level footer design</p>
     </div>
-    <div class="f-info-brand">&copy; Wanderlust Private Limited</div>
-    <div class="f-info-links">
-      <a href="/privacy">Privacy</a>
-      <a href="/terms">Terms</a>
-    </div>
-    <div>Made by ❤️ Nitesh</div>
-
-  </div>
-</footer>
+    
+    <!-- Footer -->
+    <footer class="footer-wrapper">
+        <div class="footer-wave">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+            </svg>
+        </div>
+        
+        <div class="footer-background">
+            <div class="floating-elements">
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+            </div>
+            
+            <div class="container footer-content">
+                <!-- Brand Section -->
+                <div class="brand-section text-center">
+                    <h2 class="brand-title">Wanderlust</h2>
+                    <p class="brand-subtitle">Discover the world's hidden gems with us</p>
+                    
+                    <!-- Social Icons -->
+                    <div class="social-icons">
+                        <a href="https://facebook.com" class="social-icon facebook" target="_blank" rel="noopener">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com" class="social-icon instagram" target="_blank" rel="noopener">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://linkedin.com" class="social-icon linkedin" target="_blank" rel="noopener">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+        
+                
+                <!-- Footer Links -->
+                <div class="footer-links">
+                    <a href="/privacy" class="footer-link">Privacy Policy</a>
+                    <a href="/terms" class="footer-link">Terms & Conditions</a>
+                    <a href="/contact" class="footer-link">Contact Us</a>
+                </div>
+                
+                <!-- Footer Bottom -->
+                <div class="footer-bottom">
+                    <p class="made-with-love">
+                        Made with <i class="heart-icon fas fa-heart"></i> by <span class="creator-name">Nitesh</span>
+                    </p>
+                    <p class="copyright">
+                        &copy; <span id="currentYear"></span> Wanderlust Pvt. Ltd. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Set current year
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        
+        // Newsletter form handler
+        function handleNewsletter(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('.newsletter-input').value;
+            
+            // Simulate success
+            const btn = event.target.querySelector('.newsletter-btn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Subscribed!';
+            btn.style.background = 'linear-gradient(135deg, #00b894, #00cec9)';
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = 'linear-gradient(135deg, #ff6b6b, #4ecdc4)';
+                event.target.reset();
+            }, 2000);
+        }
+        
+        // Add interactive particles on mouse move
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.98) {
+                createParticle(e.clientX, e.clientY);
+            }
+        });
+        
+        function createParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.style.cssText = `
+                position: fixed;
+                width: 4px;
+                height: 4px;
+                background: rgba(255, 255, 255, 0.6);
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 1000;
+                left: ${x}px;
+                top: ${y}px;
+                animation: particleFloat 2s ease-out forwards;
+            `;
+            
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 2000);
+        }
+        
+        // Add particle animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes particleFloat {
+                0% {
+                    opacity: 1;
+                    transform: translate(0, 0) scale(1);
+                }
+                100% {
+                    opacity: 0;
+                    transform: translate(${Math.random() * 100 - 50}px, -100px) scale(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
