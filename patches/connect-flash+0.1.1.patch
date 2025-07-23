@@ -1,0 +1,14 @@
+diff --git a/node_modules/connect-flash/lib/flash.js b/node_modules/connect-flash/lib/flash.js
+index a278bc1..80ed769 100644
+--- a/node_modules/connect-flash/lib/flash.js
++++ b/node_modules/connect-flash/lib/flash.js
+@@ -2,8 +2,7 @@
+  * Module dependencies.
+  */
+ var format = require('util').format;
+-var isArray = require('util').isArray;
+-
++var isArray = Array.isArray;
+ 
+ /**
+  * Expose `flash()` function on requests.

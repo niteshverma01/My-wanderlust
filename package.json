@@ -16,7 +16,8 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@mapbox/mapbox-sdk": "^0.16.1",
@@ -40,5 +41,9 @@
   },
   "engines": {
     "node": "v20.15.1"
+  },
+  "devDependencies": {
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0"
   }
 }
