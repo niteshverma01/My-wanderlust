@@ -1,6 +1,3 @@
-
-
-
 <style>
   .modern-navbar {
     background: rgba(255, 255, 255, 0.15);
@@ -62,29 +59,41 @@
     transform: scale(1.05);
   }
 
+  .glass-container {
+    padding: 0.5rem 1rem;
+  }
+
   @media (max-width: 768px) {
+    .navbar-collapse.show {
+      background-color:#a49b7a; /* Light blue */
+      border-radius: 15px;
+      padding: 1rem;
+      margin-top: 0.5rem;
+    }
+
     .navbar-nav {
-      flex-direction: column;
+      flex-direction: column !important;
       text-align: center;
     }
 
     .navbar-nav .nav-link {
       width: 100%;
-      margin: 0.5rem 0;
+      margin: 0.3rem 0;
+    }
+
+    form.d-flex {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.5rem;
     }
 
     .search-inp {
       width: 100%;
-      margin-bottom: 1rem;
     }
 
     .search-btn {
       width: 100%;
     }
-  }
-
-  .glass-container {
-    padding: 0.5rem 1rem;
   }
 </style>
 
@@ -96,38 +105,39 @@
     </a>
 
     <!-- Mobile Toggle -->
-    <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
-      <i class="fa-solid fa-bars"></i>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+      <i class="fa-solid fa-bars text-dark"></i>
     </button>
 
-    <!-- Navbar content -->
+    <!-- Navbar Content -->
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <!-- Left Links -->
-      <div class="navbar-nav">
-        <a class="nav-link" href="/listings"><i class="fa-solid fa-globe"></i> Explore</a>
-        <a class="nav-link" href="/listings/new"><i class="fa-solid fa-plus"></i> Add Place</a>
-      </div>
+      <div class="w-100 d-md-flex justify-content-between align-items-center">
+        <!-- Left Links -->
+        <div class="navbar-nav mb-3 mb-md-0">
+          <a class="nav-link" href="/listings"><i class="fa-solid fa-globe"></i> Explore</a>
+          <a class="nav-link" href="/listings/new"><i class="fa-solid fa-plus"></i> Add Place</a>
+        </div>
 
-      <!-- Search bar -->
-      <div class="navbar-nav ms-auto me-3">
-        <form class="d-flex" action="/listings/search" method="GET">
-          <input class="form-control me-2 search-inp" type="search" name="title" placeholder="Search destinations" />
-          <button class="btn search-btn" type="submit">
-            <i class="fa-solid fa-magnifying-glass"></i> Search
-          </button>
-        </form>
-      </div>
+        <!-- Search -->
+        <div class="navbar-nav mb-3 mb-md-0">
+          <form class="d-flex" action="/listings/search" method="GET">
+            <input class="form-control me-2 search-inp" type="search" name="title" placeholder="Search destinations" />
+            <button class="btn search-btn" type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i> Search
+            </button>
+          </form>
+        </div>
 
-      <!-- Right Links -->
-      <div class="navbar-nav">
-        <% if (!currUser) { %>
-          <a class="nav-link" href="/signup"><i class="fa-solid fa-user-plus"></i> Sign Up</a>
-          <a class="nav-link" href="/login"><i class="fa-solid fa-right-to-bracket"></i> Log In</a>
-        <% } else { %>
-          <a class="nav-link" href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-        <% } %>
+        <!-- Right Links -->
+        <div class="navbar-nav">
+          <% if (!currUser) { %>
+            <a class="nav-link" href="/signup"><i class="fa-solid fa-user-plus"></i> Sign Up</a>
+            <a class="nav-link" href="/login"><i class="fa-solid fa-right-to-bracket"></i> Log In</a>
+          <% } else { %>
+            <a class="nav-link" href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+          <% } %>
+        </div>
       </div>
     </div>
   </div>
 </nav>
-
