@@ -1,133 +1,68 @@
-
-
-
-<style>
-  .modern-navbar {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 20px;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
-    transition: all 0.3s ease;
-  }
-
-  .navbar-brand {
-    font-weight: bold;
-    font-size: 1.4rem;
-    color: #fe424d !important;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .navbar-brand:hover {
-    color: #ff5b5b !important;
-    transform: scale(1.05);
-    transition: 0.3s;
-  }
-
-  .search-btn {
-    background-color: #fe424d;
-    color: #fff;
-    border-radius: 25px;
-    padding: 0 1.2rem;
-    transition: all 0.3s ease;
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .search-btn:hover {
-    background-color: #ff5b5b;
-    transform: scale(1.05);
-  }
-
-  .search-inp {
-    border-radius: 25px;
-    padding: 0.5rem 1.2rem;
-  }
-
-  .nav-link {
-    font-weight: 500;
-    margin: 0 0.5rem;
-    transition: 0.3s;
-    border-radius: 10px;
-  }
-
-  .nav-link:hover {
-    background-color: rgba(254, 66, 77, 0.1);
-    color: #fe424d !important;
-    transform: scale(1.05);
-  }
-
-  @media (max-width: 768px) {
-    .navbar-nav {
-      flex-direction: column;
-      text-align: center;
-    }
-
-    .navbar-nav .nav-link {
-      width: 100%;
-      margin: 0.5rem 0;
-    }
-
-    .search-inp {
-      width: 100%;
-      margin-bottom: 1rem;
-    }
-
-    .search-btn {
-      width: 100%;
-    }
-  }
-
-  .glass-container {
-    padding: 0.5rem 1rem;
-  }
-</style>
-
-<nav class="navbar navbar-expand-md sticky-top modern-navbar mt-2 mx-3 glass-container">
-  <div class="container-fluid">
-    <!-- Logo -->
-    <a class="navbar-brand" href="/listings">
-      <i class="fa-regular fa-compass"></i> WanderLust
-    </a>
-
-    <!-- Mobile Toggle -->
-    <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
-      <i class="fa-solid fa-bars"></i>
-    </button>
-
-    <!-- Navbar content -->
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <!-- Left Links -->
-      <div class="navbar-nav">
-        <a class="nav-link" href="/listings"><i class="fa-solid fa-globe"></i> Explore</a>
-        <a class="nav-link" href="/listings/new"><i class="fa-solid fa-plus"></i> Add Place</a>
-      </div>
-
-      <!-- Search bar -->
-      <div class="navbar-nav ms-auto me-3">
-        <form class="d-flex" action="/listings/search" method="GET">
-          <input class="form-control me-2 search-inp" type="search" name="title" placeholder="Search destinations" />
-          <button class="btn search-btn" type="submit">
-            <i class="fa-solid fa-magnifying-glass"></i> Search
-          </button>
-        </form>
-      </div>
-
-      <!-- Right Links -->
-      <div class="navbar-nav">
-        <% if (!currUser) { %>
-          <a class="nav-link" href="/signup"><i class="fa-solid fa-user-plus"></i> Sign Up</a>
-          <a class="nav-link" href="/login"><i class="fa-solid fa-right-to-bracket"></i> Log In</a>
-        <% } else { %>
-          <a class="nav-link" href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-        <% } %>
-      </div>
+<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i></a>
+        <div class="navbar-nav web-title">
+            <a class="nav-link" id="web-title" href="/listings"><b>WanderLust</b></a>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="nav-search nav-hovernav-search-search">
+                <form class="d-flex" role="search" action="/listings/search" method="get" id="searchBox">
+                    <input class="form-control me-2 search-inp" type="search"
+                        placeholder="Search Location | Title | Price" aria-label="Search" name="q" id="mySearchInput" />
+                    <button class="btn search-btn" type="submit" id="search">
+                        <i class="fa-solid fa-magnifying-glass"></i>Search
+                    </button>
+                </form>
+            </div>
+            <div class="navbar-nav">
+                <div class="dropdown">
+                    <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="fa-solid fa-circle-user"></i>&nbsp;&nbsp;&nbsp;
+                    </button>
+                    <ul class="dropdown-menu">
+                        <% if(!currUser) { %>
+                            <a class="nav-link" href="/signup"><i class="fa-solid fa-user-plus"></i>&nbsp; &nbsp;<b>Sign
+                                    up</b></a>
+                            <a class="nav-link" href="/login"><b><i class="fa-solid fa-user-check"></i>&nbsp; &nbsp;Log
+                                    in</b></a>
+                            <% } %>
+                                <% if(currUser) { %>
+                                    <h6 class="mt-1 nav-link"><b><i class="fa-solid fa-user"></i>
+                                            &nbsp; &nbsp;<%= currUser.username%>
+                                        </b></h6>
+                                    <a class="nav-link" href="/logout"><b><i
+                                                class="fa-solid fa-arrow-right-from-bracket"></i>&nbsp; &nbsp;Log
+                                            out</b></a>
+                                    <% } %>
+                                        <hr />
+                                        <a class="nav-link" href="/listings/new"><strong><i
+                                                    class="fa-solid fa-circle-plus"></i>&nbsp; &nbsp;Airbnb your
+                                                home</strong></a>
+                    </ul>
+                </div>
+                <div id="responsive-registration">
+                    <% if(!currUser) { %>
+                        <a class="nav-link" href="/signup"><i class="fa-solid fa-user-plus"></i>&nbsp;&nbsp;<b>Sign
+                                up</b></a>
+                        <a class="nav-link" href="/login"><i class="fa-solid fa-user-check"></i>&nbsp;&nbsp;<b>Log
+                                in</b></a>
+                        <% } %>
+                            <% if(currUser) { %>
+                                <h6 class="mt-1 nav-link"><b><i class="fa-solid fa-user"></i>
+                                        &nbsp; &nbsp;<%= currUser.username%>
+                                    </b></h6>
+                                <a class="nav-link" href="/logout"><i
+                                        class="fa-solid fa-arrow-right-from-bracket"></i>&nbsp;<b>Log out</b></a>
+                                <% } %>
+                                    <a class="nav-link" href="/listings/new"><i
+                                            class="fa-solid fa-circle-plus"></i>&nbsp; &nbsp;<strong>Airbnb your
+                                            home</strong></a>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </nav>
-
