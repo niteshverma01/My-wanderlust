@@ -1,202 +1,94 @@
+
+
+
 <style>
   .modern-navbar {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
-    border-radius: 16px;
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    transition: all 0.4s ease;
-    padding: 0.8rem 1.5rem;
-    position: sticky;
-    top: 1rem;
-    z-index: 1000;
-  }
-
-  .modern-navbar:hover {
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+    transition: all 0.3s ease;
   }
 
   .navbar-brand {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-    font-size: 1.6rem;
-    color: #ff3e6c !important;
+    font-weight: bold;
+    font-size: 1.4rem;
+    color: #fe424d !important;
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    gap: 0.5rem;
   }
 
   .navbar-brand:hover {
-    color: #ff577b !important;
-    transform: translateY(-2px);
-    transition: all 0.3s ease;
-  }
-
-  .nav-link {
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    font-size: 1rem;
-    color: #333 !important;
-    margin: 0 0.8rem;
-    padding: 0.5rem 1rem;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    transition: all 0.3s ease;
-  }
-
-  .nav-link:hover {
-    background: linear-gradient(90deg, rgba(255, 62, 108, 0.15), rgba(255, 87, 123, 0.15));
-    color: #ff3e6c !important;
-    transform: translateY(-2px);
-  }
-
-  .search-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    max-width: 300px;
-  }
-
-  .search-inp {
-    border-radius: 50px;
-    padding: 0.6rem 1.5rem;
-    border: 1px solid rgba(255, 62, 108, 0.3);
-    background: rgba(255, 255, 255, 0.9);
-    font-family: 'Inter', sans-serif;
-    transition: all 0.3s ease;
-    width: 100%;
-  }
-
-  .search-inp:focus {
-    outline: none;
-    border-color: #ff3e6c;
-    box-shadow: 0 0 8px rgba(255, 62, 108, 0.3);
+    color: #ff5b5b !important;
+    transform: scale(1.05);
+    transition: 0.3s;
   }
 
   .search-btn {
-    background: linear-gradient(90deg, #ff3e6c, #ff577b);
+    background-color: #fe424d;
     color: #fff;
-    border-radius: 50px;
-    padding: 0.6rem 1.5rem;
-    border: none;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+    border-radius: 25px;
+    padding: 0 1.2rem;
     transition: all 0.3s ease;
-    margin-left: 0.5rem;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
   }
 
   .search-btn:hover {
-    background: linear-gradient(90deg, #ff577b, #ff7090);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 62, 108, 0.4);
+    background-color: #ff5b5b;
+    transform: scale(1.05);
   }
 
-  .profile-dropdown {
-    position: relative;
+  .search-inp {
+    border-radius: 25px;
+    padding: 0.5rem 1.2rem;
   }
 
-  .profile-btn {
-    background: none;
-    border: none;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: 'Inter', sans-serif;
+  .nav-link {
     font-weight: 500;
-    color: #333 !important;
-    border-radius: 12px;
-    transition: all 0.3s ease;
+    margin: 0 0.5rem;
+    transition: 0.3s;
+    border-radius: 10px;
   }
 
-  .profile-btn:hover {
-    background: rgba(255, 62, 108, 0.15);
-    color: #ff3e6c !important;
-    transform: translateY(-2px);
-  }
-
-  .dropdown-menu {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    margin-top: 0.5rem;
-    padding: 0.5rem;
-    right: 30px;
-    left: auto;
-    
-  }
-
-  .dropdown-item {
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    color: #333;
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
-    transition: all 0.3s ease;
-  }
-
-  .dropdown-item:hover {
-    background: rgba(255, 62, 108, 0.15);
-    color: #ff3e6c;
+  .nav-link:hover {
+    background-color: rgba(254, 66, 77, 0.1);
+    color: #fe424d !important;
+    transform: scale(1.05);
   }
 
   @media (max-width: 768px) {
-    .modern-navbar {
-      padding: 0.5rem 1rem;
-      border-radius: 12px;
-    }
-
     .navbar-nav {
       flex-direction: column;
       text-align: center;
-      margin-top: 1rem;
     }
 
-    .nav-link {
+    .navbar-nav .nav-link {
+      width: 100%;
       margin: 0.5rem 0;
-      padding: 0.8rem;
-      width: 100%;
-    }
-
-    .search-container {
-      flex-direction: column;
-      width: 100%;
-      max-width: none;
     }
 
     .search-inp {
-      margin-bottom: 0.5rem;
       width: 100%;
+      margin-bottom: 1rem;
     }
 
     .search-btn {
       width: 100%;
-      padding: 0.8rem;
     }
+  }
 
-    .profile-dropdown {
-      width: 100%;
-    }
-
-    .dropdown-menu {
-      width: 100%;
-      right: 0;
-    }
+  .glass-container {
+    padding: 0.5rem 1rem;
   }
 </style>
 
-<nav class="navbar navbar-expand-md sticky-top modern-navbar mt-3 mx-3">
+<nav class="navbar navbar-expand-md sticky-top modern-navbar mt-2 mx-3 glass-container">
   <div class="container-fluid">
     <!-- Logo -->
     <a class="navbar-brand" href="/listings">
@@ -204,7 +96,7 @@
     </a>
 
     <!-- Mobile Toggle -->
-    <button class="navbar-toggler text-dark border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+    <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
       <i class="fa-solid fa-bars"></i>
     </button>
 
@@ -218,31 +110,24 @@
 
       <!-- Search bar -->
       <div class="navbar-nav ms-auto me-3">
-        <form class="search-container" action="/listings/search" method="GET">
-          <input class="form-control search-inp" type="search" name="title" placeholder="Search destinations" aria-label="Search" />
+        <form class="d-flex" action="/listings/search" method="GET">
+          <input class="form-control me-2 search-inp" type="search" name="title" placeholder="Search destinations" />
           <button class="btn search-btn" type="submit">
             <i class="fa-solid fa-magnifying-glass"></i> Search
           </button>
         </form>
       </div>
 
-      <!-- Right Links / Profile Dropdown -->
+      <!-- Right Links -->
       <div class="navbar-nav">
         <% if (!currUser) { %>
           <a class="nav-link" href="/signup"><i class="fa-solid fa-user-plus"></i> Sign Up</a>
           <a class="nav-link" href="/login"><i class="fa-solid fa-right-to-bracket"></i> Log In</a>
         <% } else { %>
-          <div class="profile-dropdown">
-            <button class="profile-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fa-solid fa-user"></i> <%= currUser.username %>
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/profile"><i class="fa-solid fa-user"></i> Profile</a></li>
-              <li><a class="dropdown-item" href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
-            </ul>
-          </div>
+          <a class="nav-link" href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
         <% } %>
       </div>
     </div>
   </div>
 </nav>
+
