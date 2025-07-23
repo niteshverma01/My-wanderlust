@@ -1,88 +1,221 @@
 <% layout("layouts/boilerplate.ejs") -%>
 
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  :root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --neon-blue: #00f2fe;
+    --neon-pink: #f093fb;
+    --glass-bg: rgba(15, 15, 35, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --shadow-neon: 0 0 20px rgba(0, 242, 254, 0.3);
+    --shadow-heavy: 0 15px 40px rgba(0, 0, 0, 0.3);
+    --gold-accent: #ffd700;
+  }
+
+  .new-container {
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px);
+    border: 2px solid var(--neon-blue);
+    border-radius: 25px;
+    padding: 2rem;
+    box-shadow: var(--shadow-heavy);
+    width: 100%;
+    margin: 1rem auto;
+  }
+
+  h3 {
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .form-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.3rem;
+    display: block;
+  }
+
+  .form-control {
+    font-family: 'Inter', sans-serif;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--neon-blue);
+    border-radius: 15px;
+    color: #fff;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 10px rgba(0, 242, 254, 0.1);
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 15px rgba(240, 147, 251, 0.3);
+    transform: scale(1.02);
+  }
+
+  .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  .invalid-feedback {
+    color: var(--neon-pink);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    display: none;
+  }
+
+  .form-control:invalid:focus + .invalid-feedback {
+    display: block;
+  }
+
+  .add-btn {
+    background: var(--primary-gradient);
+    border: none;
+    border-radius: 20px;
+    padding: 0.75rem 2rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #fff;
+    width: 100%;
+    transition: all 0.4s ease;
+    box-shadow: var(--shadow-neon);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .add-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 25px rgba(0, 242, 254, 0.5);
+  }
+
+  .needs-validation:invalid .form-control {
+    border-color: var(--neon-pink);
+  }
+
+  @media (max-width: 768px) {
+    .new-container {
+      padding: 1.5rem;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+    }
+
+    .form-control {
+      font-size: 0.95rem;
+      padding: 0.6rem 1rem;
+    }
+
+    .add-btn {
+      font-size: 1rem;
+      padding: 0.6rem 1.5rem;
+    }
+  }
+</style>
+
 <div class="row mt-3">
   <div class="col-8 offset-2">
-    <H3>Create new listing</H3>
+    <h3>Create new listing</h3>
 
-    <form
-      method="POST"
-      action="/listings"
-      novalidate
-      class="needs-validation"
-      enctype="multipart/form-data"
-    >
-      <div class="mb-3">
-        <lable for="title" class="form-label">Title</lable>
-        <input
-          name="listing[title]"
-          placeholder="Add a catchy title"
-          type="text"
-          class="form-control"
-          required
-        />
-        <div class="invalid-feedback">Enter a title</div>
-      </div>
-      <div class="mb-3">
-        <lable for="description" class="form-label">Description</lable>
-        <textarea
-          name="listing[description]"
-          placeholder="description"
-          type="text"
-          class="form-control"
-          required
-        ></textarea>
-        <div class="invalid-feedback">Please Enter a Description</div>
-      </div>
-
-      <div class="mb-3">
-        <lable for="image" class="form-label">Image uploaded</lable>
-        <input
-          name="listing[image]"
-          type="file"
-          class="form-control"
-          required
-        />
-      </div>
-
-      <div class="row">
-        <div class="mb-3 col-md-4">
-          <lable for="price" class="form-label">Price</lable>
+    <div class="new-container">
+      <form
+        method="POST"
+        action="/listings"
+        novalidate
+        class="needs-validation"
+        enctype="multipart/form-data"
+      >
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
           <input
-            name="listing[price]"
-            placeholder="1200"
+            name="listing[title]"
+            placeholder="Add a catchy title"
             type="text"
             class="form-control"
             required
           />
-          <div class="invalid-feedback">Please Enter a valid Price</div>
+          <div class="invalid-feedback">Enter a title</div>
         </div>
-
-        <div class="mb-3 col-md-8">
-          <lable for="country" class="form-label">Country</lable>
-          <input
-            name="listing[country]"
-            placeholder="India"
-            type="text"
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea
+            name="listing[description]"
+            placeholder="description"
             class="form-control"
             required
-          />
-          <div class="invalid-feedback">country should be valid</div>
+          ></textarea>
+          <div class="invalid-feedback">Please Enter a Description</div>
         </div>
 
         <div class="mb-3">
-          <lable for="location" class="form-label">Location</lable>
+          <label for="image" class="form-label">Image uploaded</label>
           <input
-            name="listing[location]"
-            placeholder="jaipur,rajisthan"
-            type="text"
+            name="listing[image]"
+            type="file"
             class="form-control"
             required
           />
-          <div class="invalid-feedback">location should be valid</div>
         </div>
-      </div>
 
-      <button class="btn btn-dark add-btn mt-3">ADD</button>
-    </form>
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="price" class="form-label">Price</label>
+            <input
+              name="listing[price]"
+              placeholder="1200"
+              type="text"
+              class="form-control"
+              required
+            />
+            <div class="invalid-feedback">Please Enter a valid Price</div>
+          </div>
+
+          <div class="mb-3 col-md-8">
+            <label for="country" class="form-label">Country</label>
+            <input
+              name="listing[country]"
+              placeholder="India"
+              type="text"
+              class="form-control"
+              required
+            />
+            <div class="invalid-feedback">country should be valid</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input
+              name="listing[location]"
+              placeholder="jaipur,rajisthan"
+              type="text"
+              class="form-control"
+              required
+            />
+            <div class="invalid-feedback">location should be valid</div>
+          </div>
+        </div>
+
+        <button class="btn btn-dark add-btn mt-3">ADD</button>
+      </form>
+    </div>
   </div>
 </div>

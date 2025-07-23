@@ -1,87 +1,247 @@
 <% layout("/layouts/boilerplate") %>
 
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  :root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --neon-blue: #00f2fe;
+    --neon-pink: #f093fb;
+    --glass-bg: rgba(15, 15, 35, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --shadow-neon: 0 0 20px rgba(0, 242, 254, 0.3);
+    --shadow-heavy: 0 15px 40px rgba(0, 0, 0, 0.3);
+    --gold-accent: #ffd700;
+  }
+
+  .edit-container {
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px);
+    border: 2px solid var(--neon-blue);
+    border-radius: 25px;
+    padding: 2rem;
+    box-shadow: var(--shadow-heavy);
+    width: 100%;
+    margin: 1rem auto;
+  }
+
+  h3 {
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .form-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.3rem;
+    display: block;
+  }
+
+  .form-control {
+    font-family: 'Inter', sans-serif;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--neon-blue);
+    border-radius: 15px;
+    color: #fff;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 10px rgba(0, 242, 254, 0.1);
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 15px rgba(240, 147, 251, 0.3);
+    transform: scale(1.02);
+  }
+
+  .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  .invalid-feedback {
+    color: var(--neon-pink);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    display: none;
+  }
+
+  .form-control:invalid:focus + .invalid-feedback {
+    display: block;
+  }
+
+  .valid-feedback {
+    color: var(--gold-accent);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    display: none;
+  }
+
+  .form-control:valid:focus + .valid-feedback {
+    display: block;
+  }
+
+  .btn-dark {
+    background: var(--primary-gradient);
+    border: none;
+    border-radius: 20px;
+    padding: 0.75rem 2rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #fff;
+    width: 100%;
+    transition: all 0.4s ease;
+    box-shadow: var(--shadow-neon);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .btn-dark:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 25px rgba(0, 242, 254, 0.5);
+  }
+
+  .needs-validation:invalid .form-control {
+    border-color: var(--neon-pink);
+  }
+
+  .original-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 15px;
+    border: 2px solid var(--neon-blue);
+    box-shadow: var(--shadow-neon);
+  }
+
+  @media (max-width: 768px) {
+    .edit-container {
+      padding: 1.5rem;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+    }
+
+    .form-control {
+      font-size: 0.95rem;
+      padding: 0.6rem 1rem;
+    }
+
+    .btn-dark {
+      font-size: 1rem;
+      padding: 0.6rem 1.5rem;
+    }
+
+    .original-image img {
+      max-width: 80%;
+      margin: 0 auto;
+      display: block;
+    }
+  }
+</style>
+
 <div class="row">
   <div class="col-8 offset-2">
     <br />
     <br />
     <h3>Edit your Listing</h3>
-    <form
-      method="POST"
-      action="/listings/<%= listing._id %>?_method=PUT"
-      novalidate
-      class="needs-validation"
-      enctype="multipart/form-data"
-    >
-      <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
-        <input
-          name="listing[title]"
-          value="<%= listing.title %>"
-          type="text"
-          required
-          class="form-control"
-        />
-        <div class="valid-feedback">Title looks good!</div>
-      </div>
-      <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <textarea name="listing[description]" required class="form-control">
-        <%= listing.description %></textarea
-        >
-        <div class="invalid-feedback">Please enter a short description</div>
-      </div>
-
-      <div class="mb-3">
-        Original Listing image <br>
-        <img src="<%=originalImageUrl%>" />
-      </div>
-
-      <div class="mb-3">
-        <label for="image" class="form-label">Upload New Image </label>
-        <input name="listing[image]" type="file" class="form-control" />
-      </div>
-
-      <div class="row">
-        <div class="mb-3 col-md-4">
-          <label for="price" class="form-label">Price</label>
+    <div class="edit-container">
+      <form
+        method="POST"
+        action="/listings/<%= listing._id %>?_method=PUT"
+        novalidate
+        class="needs-validation"
+        enctype="multipart/form-data"
+      >
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
           <input
-            name="listing[price]"
-            value="<%= listing.price %>"
-            type="number"
-            required
-            class="form-control"
-          />
-          <div class="invalid-feedback">Price should be valid</div>
-        </div>
-
-        <div class="mb-3 col-md-8">
-          <label for="country" class="form-label">Country</label>
-          <input
-            name="listing[country]"
-            value="<%= listing.country %>"
+            name="listing[title]"
+            value="<%= listing.title %>"
             type="text"
             required
             class="form-control"
           />
-          <div class="invalid-feedback">Country name should be valid</div>
+          <div class="valid-feedback">Title looks good!</div>
         </div>
-      </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea name="listing[description]" required class="form-control">
+            <%= listing.description %></textarea
+          >
+          <div class="invalid-feedback">Please enter a short description</div>
+        </div>
 
-      <div class="mb-3">
-        <label for="location" class="form-label">Location</label>
-        <input
-          name="listing[location]"
-          value="<%= listing.location %>"
-          type="text"
-          required
-          class="form-control"
-        />
-        <div class="invalid-feedback">Location name should be valid</div>
-      </div>
+        <div class="mb-3 original-image">
+          Original Listing image <br />
+          <img src="<%= originalImageUrl %>" />
+        </div>
 
-      <br />
-      <button class="btn btn-dark">Save Changes</button>
-    </form>
-    <br>
+        <div class="mb-3">
+          <label for="image" class="form-label">Upload New Image </label>
+          <input name="listing[image]" type="file" class="form-control" />
+        </div>
+
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="price" class="form-label">Price</label>
+            <input
+              name="listing[price]"
+              value="<%= listing.price %>"
+              type="number"
+              required
+              class="form-control"
+            />
+            <div class="invalid-feedback">Price should be valid</div>
+          </div>
+
+          <div class="mb-3 col-md-8">
+            <label for="country" class="form-label">Country</label>
+            <input
+              name="listing[country]"
+              value="<%= listing.country %>"
+              type="text"
+              required
+              class="form-control"
+            />
+            <div class="invalid-feedback">Country name should be valid</div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="location" class="form-label">Location</label>
+          <input
+            name="listing[location]"
+            value="<%= listing.location %>"
+            type="text"
+            required
+            class="form-control"
+          />
+          <div class="invalid-feedback">Location name should be valid</div>
+        </div>
+
+        <br />
+        <button class="btn btn-dark">Save Changes</button>
+      </form>
+    </div>
+    <br />
   </div>
 </div>

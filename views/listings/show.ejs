@@ -342,36 +342,37 @@
         <p class="text-muted fs-5"><%= listing.reviews.length %> travelers have shared their stories</p>
       </div>
 
-      <div class="row g-4">
-        <% listing.reviews.forEach((review, index) => { %>
-        <div class="col-md-6">
-          <div class="review-card rounded-4 p-4 h-100" style="animation-delay: <%= index * 0.1 %>s;">
-            <!-- Review Header -->
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <div class="d-flex align-items-center">
-                <div class="bg-gradient-primary rounded-circle d-flex align-items-center justify-content-center me-3" 
-                     style="width: 40px; height: 40px;">
-                  <i class="fa-solid fa-user text-white"></i>
-                </div>
-                <div>
-                  <h6 class="mb-0 fw-bold">@<%= review.author?.username || 'Anonymous' %></h6>
-                  <small class="text-muted">Verified Guest</small>
-                </div>
+   <div class="row g-4">
+  <% if (listing.reviews && listing.reviews.length > 0) { %>
+    <% listing.reviews.forEach((review, index) => { %>
+      <div class="col-md-6">
+        <div class="review-card rounded-4 p-4 h-100" style="animation-delay: <%= index * 0.1 %>s;">
+          <!-- Review Header -->
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center">
+              <div class="bg-gradient-primary rounded-circle d-flex align-items-center justify-content-center me-3" 
+                   style="width: 40px; height: 40px;">
+                <i class="fa-solid fa-user text-white"></i>
               </div>
-              
-              <!-- Star Display -->
-              <div class="d-flex">
-                <% for (let i = 1; i <= 5; i++) { %>
-                  <i class="fa-star <%= i <= review.rating ? 'fa-solid text-warning' : 'fa-regular text-muted' %> me-1"></i>
-                <% } %>
+              <div>
+                <h6 class="mb-0 fw-bold">@<%= review.author?.username || 'Anonymous' %></h6>
+                <small class="text-muted">Verified Guest</small>
               </div>
             </div>
+            
+            <!-- Star Display -->
+            <div class="d-flex">
+              <% for (let i = 1; i <= 5; i++) { %>
+                <i class="fa-star <%= i <= (review.rating || 0) ? 'fa-solid text-warning' : 'fa-regular text-muted' %> me-1"></i>
+              <% } %>
+            </div>
+          </div>
 
-            <!-- Review Content -->
-            <p class="mb-3 lh-lg"><%= review.comment %></p>
+          <!-- Review Content -->
+          <p class="mb-3 lh-lg"><%= review.comment || 'No comment provided' %></p>
 
-            <!-- Delete Button for Review Author -->
-            <% if(currUser && review.author && currUser._id.equals(review.author._id)) { %>
+          <!-- Delete Button for Review Author -->
+          <% if (currUser && review.author && currUser._id && review.author._id && currUser._id.equals(review.author._id)) { %>
             <div class="text-end">
               <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" class="d-inline">
                 <button class="btn btn-sm btn-outline-danger rounded-pill px-3" 
@@ -380,11 +381,16 @@
                 </button>
               </form>
             </div>
-            <% } %>
-          </div>
+          <% } %>
         </div>
-        <% }); %>
       </div>
+    <% }); %>
+  <% } else { %>
+    <div class="col-12 text-center">
+      <p class="text-muted">No reviews yet. Be the first to share your experience!</p>
+    </div>
+  <% } %>
+</div>
     </div>
   </div>
   <% } %>

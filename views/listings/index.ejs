@@ -422,6 +422,13 @@
     transform: translateY(0);
   }
 
+  .no-listings {
+    text-align: center;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    grid-column: 1 / -1;
+  }
+
   @media (max-width: 1100px) {
     .filters-grid {
       overflow-x: auto;
@@ -503,7 +510,6 @@
   }
 </style>
 
-<!-- Particles Background -->
 <div class="particles-bg" id="particlesBg"></div>
 
 <!-- Loading Portal -->
@@ -521,6 +527,7 @@
       id="searchInputCosmic" 
       placeholder="Search by title or location..." 
       autocomplete="off"
+      value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>"
     >
     <i class="fas fa-search search-icon-cosmic"></i>
   </div>
@@ -542,7 +549,7 @@
         { icon: 'fa-solid fa-train', label: 'Train', category: 'train' }
       ]; %>
       <% for(let filter of filters) { %>
-        <div class="filter-cosmic <%= filter.category === 'trending' ? 'active' : '' %>" data-filter="<%= filter.category %>">
+        <div class="filter-cosmic <%= filter.category === (typeof category !== 'undefined' ? category : 'trending') ? 'active' : '' %>" data-filter="<%= filter.category %>">
           <i class="<%= filter.icon %> filter-icon-cosmic"></i>
           <div class="filter-label-cosmic"><%= filter.label %></div>
         </div>
@@ -565,12 +572,12 @@
 <!-- Listings Grid -->
 <div class="listings-cosmic" id="listingsCosmic">
   <% if (!allListings || allListings.length === 0) { %>
-    <p style="text-align: center; font-size: 1.2rem; color: rgba(255, 255, 255, 0.8);">
-      No listings available.
+    <p class="no-listings">
+      No listings available<%= typeof searchQuery !== 'undefined' && searchQuery ? ' for "' + searchQuery + '"' : '' %>.
     </p>
   <% } else { %>
     <% for(let listing of allListings) { %>
-      <a href="/listings/<%= listing._id || 'unknown' %>" class="listing-link">
+      <a href="/listings/<%= listing._id || 'unknown' %>" class="listing-link" data-title="<%= listing.title || '' %>" data-location="<%= listing.location || '' %>">
         <div class="card-cosmic scroll-reveal-cosmic">
           <img 
             src="<%= listing.image && listing.image.url ? listing.image.url : 'https://via.placeholder.com/320x200' %>" 
@@ -629,8 +636,13 @@
   }
 
   // Tax Toggle
-  let taxEnabled = false;
+  let taxEnabled = sessionStorage.getItem('taxEnabled') === 'true' || false;
   const taxToggle = document.getElementById('taxToggleCosmic');
+  if (taxEnabled) {
+    taxToggle.classList.add('active');
+    taxToggle.style.boxShadow = '0 0 20px rgba(240, 147, 251, 0.6)';
+  }
+
   function updateTaxDisplay() {
     const taxInfos = document.querySelectorAll('.tax-info-cosmic');
     taxInfos.forEach(info => {
@@ -640,6 +652,7 @@
 
   taxToggle.addEventListener('click', () => {
     taxEnabled = !taxEnabled;
+    sessionStorage.setItem('taxEnabled', taxEnabled);
     taxToggle.classList.toggle('active');
     updateTaxDisplay();
     taxToggle.style.boxShadow = taxEnabled 
@@ -647,119 +660,76 @@
       : 'none';
   });
 
-  // Dynamic Filter and Search System
-  let currentCategory = 'trending';
-  async function fetchListings(category, searchQuery = '') {
-    const loadingCosmic = document.getElementById('loadingCosmic');
-    const listingsContainer = document.getElementById('listingsCosmic');
-    loadingCosmic.classList.add('active');
-    listingsContainer.style.opacity = '0.5';
-
-    try {
-      const url = searchQuery 
-        ? `/api/listings?category=${category}&search=${encodeURIComponent(searchQuery)}`
-        : `/api/listings?category=${category}`;
-      const response = await fetch(url);
-      if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-      const listings = await response.json();
-      listingsContainer.innerHTML = '';
-
-      if (listings.length === 0) {
-        listingsContainer.innerHTML = `
-          <p style="text-align: center; font-size: 1.2rem; color: rgba(255, 255, 255, 0.8);">
-            No listings found${searchQuery ? ' for "' + searchQuery + '"' : ''}.
-          </p>
-        `;
-      } else {
-        listings.forEach(listing => {
-          const card = document.createElement('div');
-          card.className = 'card-cosmic scroll-reveal-cosmic';
-          card.innerHTML = `
-            <a href="/listings/${listing._id || 'unknown'}" class="listing-link">
-              <img 
-                src="${listing.image && listing.image.url ? listing.image.url : 'https://via.placeholder.com/320x200'}" 
-                alt="${listing.title || 'Listing Image'}" 
-                class="card-img-cosmic"
-                onerror="this.src='https://via.placeholder.com/320x200'"
-              >
-              <div class="card-img-overlay-cosmic"></div>
-              <div class="card-body-cosmic">
-                <div>
-                  <h5 class="card-title-cosmic">${listing.title || 'Untitled Listing'}</h5>
-                  <p class="card-text-cosmic">
-                    <i class="fas fa-map-marker-alt"></i>
-                    ${listing.location || 'Premium Location'} • Verified Host
-                  </p>
-                </div>
-                <div>
-                  <div class="price-cosmic">
-                    ₹${listing.price ? listing.price.toLocaleString("en-IN") : 'N/A'}
-                    <span style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.6);">
-                      /night
-                    </span>
-                  </div>
-                  <div class="tax-info-cosmic" style="display: ${taxEnabled ? 'block' : 'none'};">
-                    +₹${listing.price ? Math.round(listing.price * 0.18).toLocaleString("en-IN") : 'N/A'} GST
-                  </div>
-                </div>
-              </div>
-            </a>
-          `;
-          listingsContainer.appendChild(card);
-        });
-      }
-
-      // Animate cards
-      const cards = document.querySelectorAll('.card-cosmic');
-      cards.forEach((card, index) => {
-        setTimeout(() => {
-          card.classList.add('revealed');
-        }, index * 150);
-      });
-
-      updateTaxDisplay();
-    } catch (error) {
-      console.error('Error fetching listings:', error);
-      listingsContainer.innerHTML = `
-        <p style="text-align: center; font-size: 1.2rem; color: rgba(255, 255, 255, 0.8);">
-          Error loading listings. Please try again.
-        </p>
-      `;
-    } finally {
-      loadingCosmic.classList.remove('active');
-      listingsContainer.style.opacity = '1';
-    }
-  }
-
   // Filter Event Listeners
   document.querySelectorAll('.filter-cosmic').forEach(filter => {
     filter.addEventListener('click', () => {
-      document.querySelectorAll('.filter-cosmic').forEach(f => f.classList.remove('active'));
-      filter.classList.add('active');
-      currentCategory = filter.getAttribute('data-filter');
-      const searchQuery = document.getElementById('searchInputCosmic').value;
-      fetchListings(currentCategory, searchQuery);
+      const category = filter.getAttribute('data-filter');
+      window.location.href = `/listings?category=${encodeURIComponent(category)}`;
     });
   });
 
-  // Search Event Listener with Debounce
+  // Client-side Search Functionality
   let searchTimeout;
-  document.getElementById('searchInputCosmic').addEventListener('input', () => {
+  const searchInput = document.getElementById('searchInputCosmic');
+  const listingsContainer = document.getElementById('listingsCosmic');
+  const loadingCosmic = document.getElementById('loadingCosmic');
+  const allListings = Array.from(document.querySelectorAll('.listing-link'));
+
+  function filterListings(query) {
+    query = query.trim().toLowerCase();
+    let visibleCount = 0;
+
+    allListings.forEach(listing => {
+      const title = listing.getAttribute('data-title').toLowerCase();
+      const location = listing.getAttribute('data-location').toLowerCase();
+      const matches = title.includes(query) || location.includes(query);
+      listing.style.display = matches ? '' : 'none';
+      if (matches) visibleCount++;
+    });
+
+    // Update no listings message
+    const noListingsMessage = listingsContainer.querySelector('.no-listings');
+    if (visibleCount === 0) {
+      if (!noListingsMessage) {
+        const message = document.createElement('p');
+        message.className = 'no-listings';
+        message.textContent = query ? `No listings available for "${query}".` : 'No listings available.';
+        listingsContainer.appendChild(message);
+      }
+    } else {
+      if (noListingsMessage) {
+        noListingsMessage.remove();
+      }
+    }
+
+    // Trigger scroll reveal for visible listings
+    scrollRevealCosmic();
+  }
+
+  searchInput.addEventListener('input', () => {
     clearTimeout(searchTimeout);
+    loadingCosmic.classList.add('active');
     searchTimeout = setTimeout(() => {
-      const searchQuery = document.getElementById('searchInputCosmic').value;
-      fetchListings(currentCategory, searchQuery);
+      const searchQuery = searchInput.value;
+      filterListings(searchQuery);
+      loadingCosmic.classList.remove('active');
     }, 300);
+  });
+
+  searchInput.addEventListener('blur', () => {
+    setTimeout(() => loadingCosmic.classList.remove('active'), 500);
   });
 
   // Scroll Reveal Animation
   function scrollRevealCosmic() {
     const reveals = document.querySelectorAll('.scroll-reveal-cosmic:not(.revealed)');
     reveals.forEach(element => {
-      const elementTop = element.getBoundingClientRect().top;
-      const elementVisible = 150;
-      if (elementTop < window.innerHeight - elementVisible) {
-        element.classList.add('revealed');
+      if (element.parentElement.style.display !== 'none') {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+        if (elementTop < window.innerHeight - elementVisible) {
+          element.classList.add('revealed');
+        }
       }
     });
   }
@@ -769,6 +739,8 @@
     createParticles();
     setTimeout(scrollRevealCosmic, 100);
     updateTaxDisplay();
+    loadingCosmic.classList.remove('active');
+    filterListings(searchInput.value); // Apply initial search filter if query exists
   });
 
   window.addEventListener('scroll', scrollRevealCosmic);
