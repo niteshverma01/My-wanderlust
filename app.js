@@ -91,13 +91,11 @@ app.all("*", (req, res, next) => {
   next(new ExpressError(404, "Page not found"));
 });
 
-// Error handler
 app.use((err, req, res, next) => {
   const { statusCode = 500, message = "Something went wrong" } = err;
   res.status(statusCode).render("listings/error.ejs", { message });
 });
 
-// Start server
 app.listen(3000, () => {
   console.log("🚀 App is listening on port 3000");
 });
